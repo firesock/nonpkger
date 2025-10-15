@@ -24,3 +24,5 @@ Requirements: Docker (new enough to include buildx) and bash.
 - Intended mainly for single-executable setups that do not need to be isolated
 such as dev tooling.
 - **Purely a convenience setup, no docker security features are enabled.**
+- Don't forget to prune docker images every so often! Some caching happens
+by way of building an image.
