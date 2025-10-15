@@ -26,3 +26,5 @@ such as dev tooling.
 - **Purely a convenience setup, no docker security features are enabled.**
 - Don't forget to prune docker images every so often! Some caching happens
 by way of building an image.
+- Works best with Docker in rootless mode to avoid hitting permissions
+issue.
