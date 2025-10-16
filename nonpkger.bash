@@ -13,6 +13,8 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 cd "${SCRIPT_DIR}"
 
 test -d "${NONPKGER_DIR}"
+test -r ./paths.txt
+test -r ./invoke.bash
 TMP_FILE="${TMP_DIR}/update.sh"
 NONPKGER_TAG="nonpkger"
 readarray -t PATHS_LIST < ./paths.txt
@@ -21,7 +23,7 @@ NONPKGER_INTERNAL_PREINSTALL_DIR="/nonpkger-preinstall"
 docker buildx build --pull --tag "${NONPKGER_TAG}:latest" - <<EOF
 FROM ubuntu
 
-RUN apt-get update && apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release unzip wget && mkdir ${NONPKGER_INTERNAL_PREINSTALL_DIR}
+RUN apt-get update && apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release unzip wget sudo && mkdir ${NONPKGER_INTERNAL_PREINSTALL_DIR}
 
 WORKDIR /nonpkger-work
 EOF
@@ -39,8 +41,9 @@ cat >>"${TMP_FILE}" <<EOF
 
 #-- invoke.bash END
 
-cp --recursive --target-directory=${NONPKGER_INTERNAL_PREINSTALL_DIR} ${PATHS_LIST[@]}
-rm --recursive /nonpkger/* && install --preserve-timestamps --target-directory=/nonpkger ${NONPKGER_INTERNAL_PREINSTALL_DIR}/*
+# 2 step process to catch any issues with PATHS_LIST before rm old files
+cp --recursive --no-dereference --target-directory=${NONPKGER_INTERNAL_PREINSTALL_DIR} ${PATHS_LIST[@]}
+rm --recursive /nonpkger/* && cp --recursive --no-dereference --target-directory=/nonpkger ${NONPKGER_INTERNAL_PREINSTALL_DIR}/*
 EOF
 
 chmod +x "${TMP_FILE}"
