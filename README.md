@@ -33,8 +33,8 @@ curl https://example.com/install.sh | sh
 ## Notes
 
 - `invoke.bash` is a script so it can include other simple installs like a
-`tar -x`. Simple scripts which follow with an `ln` to the working dir can
-be used by adding `--relative`.
+`tar -x`. Simple scripts which follow with an `ln -s` to the working dir 
+can be used by adding `--relative`.
 - Runs installation script inside an Ubuntu LTS docker container.
 - All scripts are run inside bash with `set -euo pipefail`.
 - `paths.txt` is passed directly to `cp` and can accept shell expansions.
