@@ -1,6 +1,6 @@
 # nonpkger
 
-Need a way to manage all the `curl https://example.com/install.sh | bash`
+Need a way to manage all the `curl https://example.com/install.sh | sh`
 invocations? `nonpkger` is a package unwrapper, to just pull out the final
 executable(s) you need into a folder in your path.
 
@@ -21,8 +21,9 @@ Requirements: Docker (new enough to include buildx) and bash.
 
 - Runs installation script inside an Ubuntu LTS docker container.
 - All scripts are run inside bash with `set -euo pipefail`.
-- Intended mainly for single-executable setups that do not need to be isolated
-such as dev tooling.
+- Intended mainly for setups that do not need to be isolated such as dev
+tooling.
+- You'll need to know details about your package, like the final files.
 - **Purely a convenience setup, no docker security features are enabled.**
 - Don't forget to prune docker images every so often! Some caching happens
 by way of building an image.
